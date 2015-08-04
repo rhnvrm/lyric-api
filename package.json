@@ -1,0 +1,11 @@
+{
+  "name": "lyric-api",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "~1.0.1",
+    "cheerio": "^0.19.0",
+    "express": "~4.0.0",
+    "request": "^2.60.0",
+    "underscore": "^1.8.3"
+  }
+}
