@@ -43,58 +43,57 @@ router.route('/find/:artist/:song')
 		
 		var lyrics = "";
 
-		request('http://lyrics.wikia.com/api.php?artist='+ req.params.artist +'&title='+ req.params.song +'&fmt=realjson', 
-			function(error, response, body) {
-				song = JSON.parse(body);
-
-				request(song.url, function(error, response, html) {
-			        var $ = cheerio.load(html);
-			        $('script').remove();
-			        var lyrics = ($('.lyricbox').html());
-
-					/**
-					 * Override default underscore escape map
-					 */
-					var escapeMap = {
-					  '&': '&amp;',
-					  '<': '&lt;',
-					  '>': '&gt;',
-					  '"': '&quot;',
-					  "'": '&#x27;',
-					  "'": '&apos;',
-					  '`': '&#x60;',
-					  '' : '\n'
-					};
-					var unescapeMap = _.invert(escapeMap);
-					var createEscaper = function(map) {
-					  var escaper = function(match) {
-					    return map[match];
-					  };
-
-					  var source = '(?:' + _.keys(map).join('|') + ')';
-					  var testRegexp = RegExp(source);
-					  var replaceRegexp = RegExp(source, 'g');
-					  return function(string) {
-					    string = string == null ? '' : '' + string;
-					    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
-					  };
-					};
-					_.escape = createEscaper(escapeMap);
-					_.unescape = createEscaper(unescapeMap);
-
-					// replace html codes with punctuation
-					lyrics = _.unescape(lyrics);
-					// remove everything between brackets
-					lyrics = lyrics.replace(/\[[^\]]*\]/g, '');
-					// remove html comments
-					lyrics = lyrics.replace(/(<!--)[^-]*-->/g, '');
-					// remove all tags
-					lyrics = lyrics.replace(/<[^>]*>/g, ' ');
+		url = 'http://lyrics.wikia.com/wiki/' + req.params.artist + ':' + req.params.song;
 
 
-			        res.json(lyrics);
-			    });
-			});
+		request(url, function(error, response, html) {
+	        var $ = cheerio.load(html);
+	        $('script').remove();
+	        var lyrics = ($('.lyricbox').html());
+
+			/**
+			 * Override default underscore escape map
+			 */
+			var escapeMap = {
+			  '&': '&amp;',
+			  '<': '&lt;',
+			  '>': '&gt;',
+			  '"': '&quot;',
+			  "'": '&#x27;',
+			  "'": '&apos;',
+			  '`': '&#x60;',
+			  '' : '\n'
+			};
+			var unescapeMap = _.invert(escapeMap);
+			var createEscaper = function(map) {
+			  var escaper = function(match) {
+			    return map[match];
+			  };
+
+			  var source = '(?:' + _.keys(map).join('|') + ')';
+			  var testRegexp = RegExp(source);
+			  var replaceRegexp = RegExp(source, 'g');
+			  return function(string) {
+			    string = string == null ? '' : '' + string;
+			    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
+			  };
+			};
+			_.escape = createEscaper(escapeMap);
+			_.unescape = createEscaper(unescapeMap);
+
+			// replace html codes with punctuation
+			lyrics = _.unescape(lyrics);
+			// remove everything between brackets
+			lyrics = lyrics.replace(/\[[^\]]*\]/g, '');
+			// remove html comments
+			lyrics = lyrics.replace(/(<!--)[^-]*-->/g, '');
+			// remove all tags
+			lyrics = lyrics.replace(/<[^>]*>/g, ' ');
+
+
+	        res.json(lyrics);
+	    });
+
 	});
 
 
