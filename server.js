@@ -93,7 +93,7 @@ router.route('/find/:artist/:song')
 			lyrics = lyrics.replace(/<[^>]*>/g, '');
 
 
-	        res.json(lyrics);
+	        res.json({lyric:lyrics});
 	    });
 
 	});
