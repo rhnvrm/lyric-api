@@ -47,54 +47,67 @@ router.route('/find/:artist/:song')
 
 
 		request(url, function(error, response, html) {
-	        var $ = cheerio.load(html);
-	        $('script').remove();
-	        var lyrics = ($('.lyricbox').html());
+	        if(error)
+	        {
+	       		res.json({lyric:"", err:error});
+	        }
+	        else
+	        {
+		        
+		        var $ = cheerio.load(html);
+		        $('script').remove();
+		        var lyrics = ($('.lyricbox').html());
 
-			/**
-			 * Override default underscore escape map
-			 */
-			var escapeMap = {
-			  '&': '&amp;',
-			  '<': '&lt;',
-			  '>': '&gt;',
-			  '"': '&quot;',
-			  "'": '&#x27;',
-			  "'": '&apos;',
-			  '`': '&#x60;',
-			  '' : '\n'
-			};
-			var unescapeMap = _.invert(escapeMap);
-			var createEscaper = function(map) {
-			  var escaper = function(match) {
-			    return map[match];
-			  };
+				/**
+				 * Override default underscore escape map
+				 */
+				var escapeMap = {
+				  '&': '&amp;',
+				  '<': '&lt;',
+				  '>': '&gt;',
+				  '"': '&quot;',
+				  "'": '&#x27;',
+				  "'": '&apos;',
+				  '`': '&#x60;',
+				  '' : '\n'
+				};
+				var unescapeMap = _.invert(escapeMap);
+				var createEscaper = function(map) {
+				  var escaper = function(match) {
+				    return map[match];
+				  };
 
-			  var source = '(?:' + _.keys(map).join('|') + ')';
-			  var testRegexp = RegExp(source);
-			  var replaceRegexp = RegExp(source, 'g');
-			  return function(string) {
-			    string = string == null ? '' : '' + string;
-			    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
-			  };
-			};
-			_.escape = createEscaper(escapeMap);
-			_.unescape = createEscaper(unescapeMap);
+				  var source = '(?:' + _.keys(map).join('|') + ')';
+				  var testRegexp = RegExp(source);
+				  var replaceRegexp = RegExp(source, 'g');
+				  return function(string) {
+				    string = string == null ? '' : '' + string;
+				    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
+				  };
+				};
+				_.escape = createEscaper(escapeMap);
+				_.unescape = createEscaper(unescapeMap);
 
-			// replace html codes with punctuation
-			lyrics = _.unescape(lyrics);
-			// remove everything between brackets
-			lyrics = lyrics.replace(/\[[^\]]*\]/g, '');
-			// remove html comments
-			lyrics = lyrics.replace(/(<!--)[^-]*-->/g, '');
-			// replace newlines
-			lyrics = lyrics.replace(/<br>/g, '\n');
-			// remove all tags
-			lyrics = lyrics.replace(/<[^>]*>/g, '');
+				// replace html codes with punctuation
+				lyrics = _.unescape(lyrics);
+				// remove everything between brackets
+				lyrics = lyrics.replace(/\[[^\]]*\]/g, '');
+				// remove html comments
+				lyrics = lyrics.replace(/(<!--)[^-]*-->/g, '');
+				// replace newlines
+				lyrics = lyrics.replace(/<br>/g, '\n');
+				// remove all tags
+				lyrics = lyrics.replace(/<[^>]*>/g, '');
 
 
-	        res.json({lyric:lyrics});
-	    });
+		        if(lyrics != ""){
+		        	res.json({lyric:lyrics});
+		        }
+		        else{
+		        	res.json({lyric:"", err: "not found"});
+		        }
+		    }
+		});
 
 	});
 
