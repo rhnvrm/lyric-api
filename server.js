@@ -101,7 +101,7 @@ router.route('/find/:artist/:song')
 
 
 		        if(lyrics != ""){
-		        	res.json({lyric:lyrics});
+		        	res.json({lyric:lyrics, err:"none"});
 		        }
 		        else{
 		        	res.json({lyric:"", err: "not found"});
