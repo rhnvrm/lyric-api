@@ -9,3 +9,5 @@ Example: http://lyric-api.herokuapp.com/api/find/John%20Lennon/Imagine
 
 
 Lyrics are being scraped from publically available lyrics at lyrics.wikia.com
+
+# NOTE: Please do not use this in any projects as it is not allowed by the scraped website.
