@@ -1,0 +1,5 @@
+{
+  "name": "Lyric API",
+  "description": "API for fetching lyrics from lyrics.wikia.com",
+  "repository": "https://github.com/fhnvrm/lyric-api"
+}
