@@ -1,7 +1,9 @@
 # lyric-api
 API that returns lyrics after searching on lyrics.wikia.com based on Artist and Song.
 
+##Deploy on Heroku
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ##Deployed at: 
 https://lyric-api.herokuapp.com/api/ <del>and
