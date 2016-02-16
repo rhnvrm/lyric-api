@@ -24,3 +24,28 @@ print(str(data['lyric']).split())
 
 ### NOTE: Please do not use this in Production as it is not allowed by the scraped website.
 Use this at your own discretion. Lyrics are being scraped from publically available lyrics at lyrics.wikia.com 
+
+#[lyric-get](https://github.com/rhnvrm/lyric-api/blob/master/lyric-get/)
+
+[![npm version](https://badge.fury.io/js/lyric-get.svg)](https://badge.fury.io/js/lyric-get)
+
+module for fetching lyrics from lyrics.wikia.com using artist name and song.
+
+#Installation
+
+`npm install lyric-get`
+
+#Usage
+
+```nodejs
+var l = require("lyric-get");
+
+l.get("John Lennon", "Imagine", function(err, res){
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log(res);
+    }
+});
+```

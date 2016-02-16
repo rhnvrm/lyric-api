@@ -1,5 +1,7 @@
 #lyric-get
 
+[![npm version](https://badge.fury.io/js/lyric-get.svg)](https://badge.fury.io/js/lyric-get)
+
 module for fetching lyrics from lyrics.wikia.com using artist name and song.
 
 #Installation
